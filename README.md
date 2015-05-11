@@ -5,6 +5,9 @@ asynchronous HTTP server running using cpp-netlib. All it does is
 asynchronously capture the message body of POSTed input and log its progress as
 it does so.
 
+As you might guess, this code is part of a larger project which I cannot post
+publicly. For this reason, meaningful transaction handling has been omitted.
+
 Requirements
 ------------
 There are really just three C++ files in the project, plus a CMake 2.8 file. It
@@ -20,6 +23,6 @@ Test the server by POSTing data to it. For example:
 > rcook$ curl -X POST -d @AsyncDaemon.h http://localhost:8787/foo
 
 The server will handle the transaction and log its progress as it
-asynchronously reads in the request (its own source code in ths case). It
+asynchronously reads in the request (its own source code in this case). It
 generates a simple output message.
 
