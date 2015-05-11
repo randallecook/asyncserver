@@ -17,7 +17,9 @@ Launch the server on the command line. It writes its log output to stdout.
 
 Test the server by POSTing data to it. For example:
 
-> rcook$ curl -H "Content-Type: application/json" -X POST -d @AsyncDaemon.cpp http://localhost:8787/foo
+> rcook$ curl -X POST -d @AsyncDaemon.h http://localhost:8787/foo
 
-The server will receive the file (its own source code in this case) and log its progress as it reads in the request. It generates a simple output message.
+The server will handle the transaction and log its progress as it
+asynchronously reads in the request (its own source code in ths case). It
+generates a simple output message.
 
