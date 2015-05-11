@@ -36,8 +36,8 @@ AsyncDaemon::Transaction::~Transaction()
 
 void AsyncDaemon::Transaction::asyncRead(HTTPServer::connection_ptr connection)
 {
-	logMsg("invoke asynchronous read");
 	connection->read(ref(*this));
+	logMsg("invoked asynchronous read");
 }
 
 void AsyncDaemon::Transaction::operator()(
@@ -46,6 +46,7 @@ void AsyncDaemon::Transaction::operator()(
 	size_t n,
 	HTTPServer::connection_ptr connection)
 {
+	logMsg("begin asynchronous read callback on thread %lu", syscall(SYS_gettid));
 	if (!error)
 	{
 		m_request_body.append(r.begin(), n);
@@ -68,6 +69,7 @@ void AsyncDaemon::Transaction::operator()(
 		logMsg("trouble reading input: %s", error.message().c_str());
 		connection->set_status(HTTPServer::connection::internal_server_error);
 	}
+	logMsg("end asynchronous read callback");
 }
 
 void AsyncDaemon::Transaction::writeResponse(HTTPServer::connection_ptr connection)
@@ -140,7 +142,7 @@ void AsyncDaemon::operator() (
 		connection->set_status(HTTPServer::connection::service_unavailable);
 	}
 
-	logMsg("processed request");
+	logMsg("end transaction handler");
 }
 
 void AsyncDaemon::initiateShutdown()
@@ -162,7 +164,7 @@ void AsyncDaemon::log(const char* s) const
 
 void AsyncDaemon::receiveLoop()
 {
-	logMsg("receive loop beginning");
+	logMsg("receive thread beginning");
 
 	try
 	{
@@ -179,6 +181,6 @@ void AsyncDaemon::receiveLoop()
 		initiateShutdown();
 	}
 
-	logMsg("receive loop ending");
+	logMsg("receive thread ending");
 }
 
