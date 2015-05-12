@@ -20,9 +20,11 @@ Launch the server on the command line. It writes its log output to stdout.
 
 Test the server by POSTing data to it. For example:
 
-> rcook$ curl -X POST -d @AsyncDaemon.h http://localhost:8787/foo
+> rcook$ curl -H 'Expect:' -d @AsyncDaemon.h http://localhost:8787/foo
 
 The server will handle the transaction and log its progress as it
 asynchronously reads in the request (its own source code in this case). It
-generates a simple output message.
+generates a simple output message. Note that we need the -H switch to tell curl
+to not wait for a 100 Continue response from the server, as cpp-netlib version
+0.11.0 does not support sending it.
 
